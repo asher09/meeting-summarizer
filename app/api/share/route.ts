@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     await resend.emails.send({
-      from: 'no-reply@yourdomain.com',
+      from: 'no-reply@meetnotesummarizer.app',
       to: email,
       subject: 'Your Meeting Summary',
       html: `<pre style="font-family:inherit">${summary}</pre>`,
