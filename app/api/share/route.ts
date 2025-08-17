@@ -19,7 +19,11 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    let message = 'Internal server error';
+    if (error instanceof Error) {
+      message = error.message;
+    }
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

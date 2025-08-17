@@ -22,10 +22,14 @@ export default function HomePage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('/api/summarize', {transcript, prompt });
+      const response = await axios.post('/api/summarize', { transcript, prompt });
       setSummary(response.data.summary);
-    } catch (err: any) {
-      setError(err.message || 'Unknown error');
+    } catch (err: unknown) {
+      let message = 'Unknown error';
+      if (err && typeof err === 'object' && 'message' in err) {
+        message = (err as { message: string }).message;
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -36,9 +40,13 @@ export default function HomePage() {
     setError(null);
     try {
       await axios.post('/api/share', { summary, email });
-
-    } catch (err: any) {
-      setError(err.message || 'Unknown error');
+      // Optionally show a success message
+    } catch (err: unknown) {
+      let message = 'Unknown error';
+      if (err && typeof err === 'object' && 'message' in err) {
+        message = (err as { message: string }).message;
+      }
+      setError(message);
     } finally {
       setSharing(false);
     }

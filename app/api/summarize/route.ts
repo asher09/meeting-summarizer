@@ -30,7 +30,11 @@ export async function POST(request: NextRequest) {
     const summary = chatCompletion.choices[0]?.message?.content || '';
 
     return NextResponse.json({ summary });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
-  }
+  } catch (error: unknown) {
+    let message = 'Internal server error';
+        if (error instanceof Error) {
+            message = error.message;
+        }
+        return NextResponse.json({ error: message }, { status: 500 });
+    }
 }
